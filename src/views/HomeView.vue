@@ -6,60 +6,79 @@
         v-model="searchQuery"
         @input="getSearchResults"
         placeholder="Search for a city or state"
-        class="py-2 px-1 w-full bg-transparent border-b
-        focus:border-fuel-secondary
-        focus:outline-none
-        focus: shadow-[0px_1px_0_0_#004E71]"
+        class="py-2 px-1 w-full bg-transparent border-b focus:border-fuel-secondary focus:outline-none focus: shadow-[0px_1px_0_0_#004E71]"
+      />
+      <ul
+        class="absolute bg-fuel-secondary text-white w-full shadow-md py-2 px-1 top-[66px]"
+        v-if="mapboxSearchResults"
       >
-      <ul class="absolute bg-fuel-secondary text-white
-      w-full shadow-md py-2 px-1 top-[66px]"
-      v-if="mapboxSearchResults">
-      <p class="py-2" v-if="searchError">
-        Sorry, something went wrong, please try again.
-      </p>
-      <p class="py-2" v-if="!searchError && mapboxSearchResults.length === 0">
-        No results match your query, try a different term.
-      </p>
-      <template v-else>
-        <li v-for="searchResult in mapboxSearchResults"
-        :key="searchResult.id"
-        class="py-2 cursor-pointer">
-          {{ searchResult.place_name }}
-        </li>
-      </template>
+        <p class="py-2" v-if="searchError">
+          Sorry, something went wrong, please try again.
+        </p>
+        <p class="py-2" v-if="!searchError && mapboxSearchResults.length === 0">
+          No results match your query, try a different term.
+        </p>
+        <template v-else>
+          <li
+            v-for="searchResult in mapboxSearchResults"
+            :key="searchResult.id"
+            class="py-2 cursor-pointer"
+            @click="previewCity(searchResult)"
+          >
+            {{ searchResult.place_name }}
+          </li>
+        </template>
       </ul>
     </div>
-    
   </main>
 </template>
 
 <script setup lang="ts">
-  import { ref } from "vue";
-  import axios from "axios";
-  import { useRouter } from "vue-router";
-  // import CityCardSkeleton from "../components/CityCardSkeleton.vue";
-  // import CityList from "../components/CityList.vue";
+import { ref } from "vue";
+import axios from "axios";
+import { useRouter } from "vue-router";
+// import CityCardSkeleton from "../components/CityCardSkeleton.vue";
+// import CityList from "../components/CityList.vue";
 
-  const mapboxAPIKey = "pk.eyJ1IjoiYS1za2Vyc3lzIiwiYSI6ImNsOWczZTFmazBidHczd2syYnYwZDZueHEifQ.Oeld8g7GuQWldb-xOHh_bQ";
-  const searchQuery = ref("");
-  const queryTimeout = ref(0);
-  const mapboxSearchResults = ref(null);
-  const searchError = ref(false);
+const router = useRouter();
+const previewCity = (searchResult) => {
+  console.log(searchResult);
+  const lat = searchResult.center[1];
+  const lng = searchResult.center[0];
+  router.push({
+    name: "cityView",
+    params: { lat: lat, lng: lng },
+    query: {
+      lat: searchResult.geometry.coordinates[1],
+      lng: searchResult.geometry.coordinates[0],
+      preview: true,
+    }
+  })
+}
 
-  const getSearchResults = () => {
-    clearTimeout(queryTimeout.value);
-    queryTimeout.value = setTimeout(async () => {
-      if (searchQuery.value !== "") {
-        try {
-          const result = await axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${searchQuery.value}.json?access_token=${mapboxAPIKey}&types=place,postcode&country=DE&language=de`)
-          mapboxSearchResults.value = result.data.features;
-        } catch {
-          searchError.value = true;
-        }
-        
-        return; 
+const mapboxAPIKey =
+  "pk.eyJ1IjoiYS1za2Vyc3lzIiwiYSI6ImNsOWczZTFmazBidHczd2syYnYwZDZueHEifQ.Oeld8g7GuQWldb-xOHh_bQ";
+const searchQuery = ref("");
+const queryTimeout = ref(0);
+const mapboxSearchResults = ref(null);
+const searchError = ref(false);
+
+const getSearchResults = () => {
+  clearTimeout(queryTimeout.value);
+  queryTimeout.value = setTimeout(async () => {
+    if (searchQuery.value !== "") {
+      try {
+        const result = await axios.get(
+          `https://api.mapbox.com/geocoding/v5/mapbox.places/${searchQuery.value}.json?access_token=${mapboxAPIKey}&types=place,postcode&country=DE&language=de`
+        );
+        mapboxSearchResults.value = result.data.features;
+      } catch {
+        searchError.value = true;
       }
-      mapboxSearchResults.value = null;
-    }, 300);
-  }
+
+      return;
+    }
+    mapboxSearchResults.value = null;
+  }, 300);
+};
 </script>

@@ -6,7 +6,7 @@ module.exports = {
       colors: {
         "fuel-primary": "#00668A",
         "fuel-secondary": "#004E71",
-      }
+      },
     },
     fontFamily: {
       Roboto: ["Roboto, sans-serif"],
@@ -21,4 +21,4 @@ module.exports = {
     },
   },
   plugins: [],
-}
+};
