@@ -4,8 +4,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "fuel-primary": "#00668A",
-        "fuel-secondary": "#004E71",
+        "fuel-primary": "#22577a",
+        "fuel-secondary": "#42779a",
       },
     },
     fontFamily: {
