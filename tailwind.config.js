@@ -4,8 +4,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "fuel-primary": "#22577a",
-        "fuel-secondary": "#42779a",
+        "fuel-primary": "#2a9d8f",
+        "fuel-secondary": "#264653",
+        "fuel-wrong": "#e76f51",
       },
     },
     fontFamily: {
@@ -14,10 +15,6 @@ module.exports = {
     container: {
       padding: "2rem",
       center: true,
-    },
-    screens: {
-      sm: "640px",
-      md: "768px",
     },
   },
   plugins: [],

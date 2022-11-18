@@ -1,5 +1,5 @@
 <template>
-  <header class="sticky top-0 bg-fuel-primary shadow-lg">
+  <header class="sticky top-0 bg-fuel-primary shadow-lg z-10">
     <nav
       class="container flex flex-col sm:flex-row items-center gap-4 text-white py-6"
     >
@@ -17,6 +17,7 @@
         ></i>
         <i
           class="fa-solid fa-circle-plus text-xl hover:text-fuel-secondary duration-150 cursor-pointer"
+          @click="addCity"
         ></i>
       </div>
 
@@ -54,12 +55,50 @@
   </header>
 </template>
 
-<script setup>
-import { RouterLink } from "vue-router";
+<script setup lang="ts">
+import { RouterLink, useRoute, useRouter } from "vue-router";
+import { uid } from "uid";
 import { ref } from "vue";
+import type { Ref } from "vue";
 import BaseModal from "./BaseModal.vue";
 
-const modalActive = ref(null);
+const savedCities: Ref<any> = ref([]);
+const route = useRoute();
+const router = useRouter();
+const addCity = () => {
+  if (localStorage.getItem("savedCites")) {
+    savedCities.value = JSON.parse(
+      localStorage.getItem("savedCities") as string
+    );
+  } else {
+    savedCities.value = "";
+  }
+
+  const locationObj: any = {
+    id: uid() as string,
+    state: route.params.state as string,
+    city: route.params.city as string,
+    coords: {
+      lat: route.query.lat as string,
+      lng: route.query.lng as string,
+    },
+    type: route.query.type as string,
+    range: route.query.range as string,
+  };
+
+  savedCities.value.push(locationObj);
+  localStorage.setItem(
+    "savedCites",
+    JSON.stringify(savedCities.value as string)
+  );
+
+  let query = Object.assign({}, route.query);
+  delete query.preview;
+  query.id = locationObj.id;
+  router.replace({ query });
+};
+
+const modalActive = ref(false);
 const toggleModal = () => {
   modalActive.value = !modalActive.value;
 };

@@ -69,14 +69,16 @@
                   'bg-white  cursor-pointer group relative border-fuel-primary rounded-md py-3 px-4 flex items-center justify-center hover:bg-fuel-secondary hover:border-fuel-primary hover:text-white focus:outline-none sm:flex-1',
                 ]"
               >
-                <RadioGroupLabel as="span">{{ type }}</RadioGroupLabel>
+                <RadioGroupLabel as="span" class="uppercase">{{
+                  type
+                }}</RadioGroupLabel>
               </div>
             </RadioGroupOption>
           </div>
         </RadioGroup>
       </p>
       <div
-        @click="previewCity(chosenResult)"
+        @click="previewCity(chosenResult, fuelRange, fuelType)"
         class="bg-white w-full cursor-pointer text-black text-center py-3 my-5 rounded-md hover:bg-fuel-secondary hover:border-fuel-primary hover:text-white"
       >
         Suchen
@@ -95,18 +97,23 @@ import { useRouter } from "vue-router";
 // import CityCardSkeleton from "../components/CityCardSkeleton.vue";
 // import CityList from "../components/CityList.vue";
 
-const types = ["E5", "E10", "Diesel"];
+const types = ["e5", "e10", "diesel"];
 
 const router = useRouter();
-const previewCity = (chosenResult) => {
+const previewCity = (chosenResult, fuelRange, fuelType) => {
   const [city, state] = chosenResult.place_name.split(",");
   router.push({
     name: "cityView",
-    params: { state: state.replaceAll(" ", ""), city: city },
+    params: {
+      state: state.replaceAll(" ", ""),
+      city: city,
+    },
     query: {
       lat: chosenResult.geometry.coordinates[1],
       lng: chosenResult.geometry.coordinates[0],
       preview: true,
+      range: fuelRange,
+      type: fuelType,
     },
   });
 };
@@ -124,8 +131,8 @@ const fuelRange = ref(5);
 const chosenResult = ref(null);
 
 const removeSearchResults = (searchResult) => {
+  chosenResult.value = searchResult;
   mapboxSearchResults.value = null;
-  chosenResult.value = searchResult.value;
   fuelPlace.value = searchResult.place_name;
 };
 

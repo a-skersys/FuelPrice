@@ -4,7 +4,7 @@
       <AsyncCityView />
 
       <template #fallback>
-        <p>Loading...</p>
+        <p class="text-white text-center p-2">Loading...</p>
       </template>
     </Suspense>
   </div>
