@@ -177,7 +177,6 @@ const Logos = {
 };
 
 const route = useRoute();
-const fuelType = route.query.type;
 
 const getFuelData = async () => {
   try {

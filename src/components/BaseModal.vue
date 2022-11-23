@@ -24,7 +24,7 @@
   </Teleport>
 </template>
 
-<script setup>
+<script setup lang="ts">
 defineEmits(["close-modal"]);
 defineProps({
   modalActive: {

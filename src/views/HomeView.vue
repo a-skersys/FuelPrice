@@ -55,11 +55,11 @@
         <RadioGroup v-model="fuelType">
           <div class="grid grid-cols-3 gap-4">
             <RadioGroupOption
-              as="template"
               v-for="type in types"
               :key="type"
               :value="type"
               v-slot="{ active }"
+              as="template"
             >
               <div
                 :class="[
@@ -84,23 +84,32 @@
         Suchen
       </div>
     </div>
+    <div class="flex flex-col gap-4">
+      <Suspense>
+        <CityList />
+      </Suspense>
+    </div>
     <p class="text-xl">{{ fuelType }}, {{ fuelRange }}, {{ fuelPlace }}</p>
   </main>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
+import type { Ref } from "vue";
 import axios from "axios";
-import VueAxios from "vue-axios";
 import { RadioGroup, RadioGroupLabel, RadioGroupOption } from "@headlessui/vue";
 import { useRouter } from "vue-router";
 // import CityCardSkeleton from "../components/CityCardSkeleton.vue";
-// import CityList from "../components/CityList.vue";
+import CityList from "../components/CityList.vue";
 
 const types = ["e5", "e10", "diesel"];
 
 const router = useRouter();
-const previewCity = (chosenResult, fuelRange, fuelType) => {
+const previewCity = (
+  chosenResult: any,
+  fuelRange: number,
+  fuelType: string
+) => {
   const [city, state] = chosenResult.place_name.split(",");
   router.push({
     name: "cityView",
@@ -111,7 +120,7 @@ const previewCity = (chosenResult, fuelRange, fuelType) => {
     query: {
       lat: chosenResult.geometry.coordinates[1],
       lng: chosenResult.geometry.coordinates[0],
-      preview: true,
+      preview: true as any,
       range: fuelRange,
       type: fuelType,
     },
@@ -123,14 +132,14 @@ const mapboxAPIKey =
 const fuelPlace = ref("");
 const searchQuery = ref(fuelPlace);
 const queryTimeout = ref(0);
-const mapboxSearchResults = ref(null);
+const mapboxSearchResults: Ref<any> = ref([]);
 const searchError = ref(false);
 
 const fuelType = ref("");
 const fuelRange = ref(5);
 const chosenResult = ref(null);
 
-const removeSearchResults = (searchResult) => {
+const removeSearchResults = (searchResult: any) => {
   chosenResult.value = searchResult;
   mapboxSearchResults.value = null;
   fuelPlace.value = searchResult.place_name;
