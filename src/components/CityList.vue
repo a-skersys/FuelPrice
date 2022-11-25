@@ -23,9 +23,11 @@ const getCities = async () => {
       localStorage.getItem("savedCities") as string
     );
 
-    console.log(savedCities);
+    console.log(savedCities.value);
 
     const requests = [] as any;
+
+    console.log(requests);
     savedCities.value.forEach((city: any) => {
       requests.push(
         axios.get(
@@ -33,6 +35,8 @@ const getCities = async () => {
         )
       );
     });
+
+    console.log(requests);
 
     const fuelData = await Promise.all(requests);
 
