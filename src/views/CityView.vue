@@ -10,6 +10,6 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import AsyncCityView from "../components/AsyncCityView.vue";
 </script>
