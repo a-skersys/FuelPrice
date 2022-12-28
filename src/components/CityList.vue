@@ -1,11 +1,12 @@
 <template>
+  <p v-if="savedCities.length !== 0">Gespeicherte Orte:</p>
   <div v-for="city in savedCities" :key="city.id">
     <CityCard :city="city" @click="goToCityView(city)" />
   </div>
 
   <p v-if="savedCities.length === 0">
-    No locations added. To start tracking a locations, search in the field
-    above.
+    Keine Standorte hinzugefügt. Um mit der Verfolgung eines Standorts zu
+    beginnen, suchen Sie im obigen Feld.
   </p>
 </template>
 
@@ -15,6 +16,7 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import type { Ref } from "vue";
 import CityCard from "./CityCard.vue";
+import CityCardSkeleton from "./CityCardSkeleton.vue";
 
 const savedCities: Ref<any> = ref([]);
 const getCities = async () => {

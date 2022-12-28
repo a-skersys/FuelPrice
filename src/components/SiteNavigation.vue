@@ -5,8 +5,7 @@
     >
       <RouterLink :to="{ name: 'home' }">
         <div class="flex items-center gap-3">
-          <i class="fa-solid fa-gas-pump text-2xl"></i>
-          <p class="text-2xl">FuelPrice</p>
+          <p class="text-4xl font-light">TankenSpaß</p>
         </div>
       </RouterLink>
 
@@ -16,38 +15,49 @@
           @click="toggleModal"
         ></i>
         <i
+          v-if="route.query.preview"
           class="fa-solid fa-circle-plus text-xl hover:text-fuel-secondary duration-150 cursor-pointer"
           @click="addCity"
+        ></i>
+        <i
+          v-else
+          class="fa-solid fa-trash text-xl hover:text-fuel-secondary duration-150 cursor-pointer"
+          @click="removeCity"
         ></i>
       </div>
 
       <BaseModal :modalActive="modalActive" @close-modal="toggleModal">
         <div class="text-black">
-          <h1 class="text-2xl mb-1">About:</h1>
+          <h1 class="text-2xl mb-1">Über:</h1>
           <p class="mb-4">
-            The Local Weather allows you to track the current and future weather
-            of cities of your choosing.
+            Mit TankenSpaß können Sie die Kraftstoffpreise der Städte Ihrer Wahl
+            verfolgen.
           </p>
-          <h2 class="text-2xl">How it works:</h2>
+          <h2 class="text-2xl">Wie es funktioniert:</h2>
           <ol class="list-decimal list-inside mb-4">
             <li>
-              Search for your city by entering the name into the search bar.
+              Suchen Sie nach Ihrer Stadt, indem Sie ihren Namen in die
+              Suchleiste eingeben und die richtige auswählen.
             </li>
             <li>
-              Select a city within the results, this will take you to the
-              current weather for your selection.
+              Wählen Sie den Kraftstofftyp und die Entfernung vom
+              Standortzentrum aus.
             </li>
             <li>
-              Track the city by clicking on the "+" icon in the top right. This
-              will save the city to view at a later time on the home page.
+              Verfolgen Sie die Stadt, indem Sie oben rechts auf das
+              <i class="fa-solid fa-circle-plus"></i>
+              Symbol klicken. Dadurch wird die Stadt gespeichert, um sie zu
+              einem späteren Zeitpunkt auf der Startseite anzuzeigen.
             </li>
           </ol>
 
-          <h2 class="text-2xl">Removing a city</h2>
+          <h2 class="text-2xl">Eine Stadt entfernen</h2>
           <p>
-            If you no longer wish to track a city, simply select the city within
-            the home page. At the bottom of the page, there will be am option to
-            delete the city.
+            Wenn Sie eine Stadt nicht mehr verfolgen möchten, wählen Sie einfach
+            die Stadt auf der Startseite aus. Oben auf der Seite wird anstelle
+            des <i class="fa-solid fa-circle-plus"></i> Symbol ein
+            <i class="fa-solid fa-trash"></i> Symbol angezeigt, um den Eintrag
+            zu entfernen.
           </p>
         </div>
       </BaseModal>
@@ -91,6 +101,17 @@ const addCity = () => {
   delete query.preview;
   query.id = locationObj.id;
   router.replace({ query });
+};
+
+const removeCity = () => {
+  savedCities.value = JSON.parse(localStorage.getItem("savedCities") as string);
+  const updatedCities = savedCities.value.filter(
+    (city: any) => city.id !== route.query.id
+  );
+  localStorage.setItem("savedCities", JSON.stringify(updatedCities));
+  router.push({
+    name: "home",
+  });
 };
 
 const modalActive = ref(false);

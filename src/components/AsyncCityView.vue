@@ -12,7 +12,7 @@
       </p>
     </div>
     <!-- Fuel Overview -->
-    <div class="flex flex-col items-center text-white py-12">
+    <div class="flex flex-col items-center text-white py-12 px-4">
       <h1 class="text-4xl mb-2">{{ route.params.city }}</h1>
       <h2 class="text-2xl mb-2">
         <span class="capitalize">{{ route.query.type }}</span> in
@@ -24,7 +24,7 @@
             class="flex my-6 w-full bg-white rounded-lg shadow-md shadow-fuel-secondary"
             :class="[station.isOpen == false ? 'opacity-50' : 'opacity-100']"
           >
-            <div class="h-24 w-1/6 m-6 flex-shrink-0 overflow-hidden">
+            <div class="h-24 w-1/6 my-6 mx-3 flex-shrink-0 overflow-hidden">
               <img
                 v-if="Object.keys(Logos).includes(station.brand.split(' ')[0])"
                 :src="brandLogo(station.brand.split(' ')[0])"
@@ -75,7 +75,9 @@
               </p>
               <p
                 v-if="
-                  (station.price - averagePrice(fuelData)).toFixed(2) * 100 < 0
+                  Number((station.price - averagePrice(fuelData)).toFixed(2)) *
+                    100 <
+                  0
                 "
                 class="text-fuel-primary"
               >
@@ -88,7 +90,9 @@
               </p>
               <p
                 v-else-if="
-                  (station.price - averagePrice(fuelData)).toFixed(2) * 100 > 0
+                  Number((station.price - averagePrice(fuelData)).toFixed(2)) *
+                    100 >
+                  0
                 "
                 class="text-fuel-wrong"
               >
@@ -101,7 +105,9 @@
               </p>
               <p
                 v-else-if="
-                  (station.price - averagePrice(fuelData)).toFixed(2) * 100 == 0
+                  Number((station.price - averagePrice(fuelData)).toFixed(2)) *
+                    100 ==
+                  0
                 "
                 class="text-gray-400 text-center"
               >
@@ -121,10 +127,9 @@
 
 <script setup lang="ts">
 import axios from "axios";
-import { ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 
-const Logos = {
+const Logos: any = {
   ARAL: {
     imageSrc:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Aral_Logo.svg/1200px-Aral_Logo.svg.png",
