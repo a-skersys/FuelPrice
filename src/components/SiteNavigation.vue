@@ -5,25 +5,63 @@
     >
       <RouterLink :to="{ name: 'home' }">
         <div class="flex items-center gap-3">
-          <p class="text-4xl font-light">TankenSpaß</p>
+          <p class="text-4xl font-Fugaz">
+            <i class="fa-solid fa-car-side text-3xl text-fuel-secondary"></i>
+            Tanken<span class="text-fuel-secondary">Spaß</span>
+          </p>
         </div>
       </RouterLink>
 
-      <div class="flex gap-3 flex-1 justify-end">
-        <i
-          class="fa-solid fa-circle-info text-xl hover:text-fuel-secondary duration-150 cursor-pointer"
-          @click="toggleModal"
-        ></i>
-        <i
-          v-if="route.query.preview"
-          class="fa-solid fa-circle-plus text-xl hover:text-fuel-secondary duration-150 cursor-pointer"
-          @click="addCity"
-        ></i>
-        <i
-          v-else
-          class="fa-solid fa-trash text-xl hover:text-fuel-secondary duration-150 cursor-pointer"
-          @click="removeCity"
-        ></i>
+      <div class="flex gap-3 flex-1 justify-end items-center">
+        <div
+          class="inline-flex shadow-md hover:shadow-lg focus:shadow-lg"
+          role="toolbar"
+        >
+          <RouterLink :to="{ name: 'home' }">
+            <button
+              v-if="route.query.id || route.query.preview"
+              type="button"
+              class="rounded-l inline-block px-4 py-2.5 bg-fuel-primary border-fuel-secondary border text-white text-sm leading-tight uppercase hover:bg-fuel-secondary transition duration-150 ease-in-out"
+            >
+              <i class="fa-solid fa-house text-lg duration-150 mr-2"></i>
+              Startseite
+            </button>
+          </RouterLink>
+          <button
+            type="button"
+            class="rounded-md inline-block px-4 py-2.5 bg-fuel-primary border-fuel-secondary border text-white text-sm leading-tight uppercase hover:bg-fuel-secondary transition duration-150 ease-in-out"
+            :class="[
+              route.query.id || route.query.preview
+                ? 'rounded-none border-l-0'
+                : '',
+            ]"
+          >
+            <i
+              class="fa-solid fa-circle-info text-lg mr-2"
+              @click="toggleModal"
+            ></i>
+            Anweisung
+          </button>
+          <button
+            v-if="route.query.preview"
+            type="button"
+            class="rounded-r-md inline-block px-4 py-2.5 bg-fuel-primary border-fuel-secondary border border-l-0 text-white text-sm leading-tight uppercase hover:bg-fuel-secondary transition duration-150 ease-in-out"
+          >
+            <i
+              class="fa-solid fa-circle-plus text-lg mr-2"
+              @click="addCity"
+            ></i>
+            Hinzufügen
+          </button>
+          <button
+            v-if="!route.query.preview && route.query.id"
+            type="button"
+            class="rounded-r-md inline-block px-4 py-2.5 bg-fuel-primary border-fuel-secondary border border-l-0 text-white text-sm leading-tight uppercase hover:bg-fuel-secondary focus:opacity-90 focus:text-fuel-primary focus:outline-none focus:ring-0 active:opacity-80 transition duration-150 ease-in-out"
+          >
+            <i class="fa-solid fa-trash text-lg mr-2" @click="removeCity"></i>
+            Löschen
+          </button>
+        </div>
       </div>
 
       <BaseModal :modalActive="modalActive" @close-modal="toggleModal">

@@ -1,7 +1,32 @@
+<style>
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 10px;
+  background-color: rgb(38, 70, 83);
+  overflow: visible;
+  cursor: pointer;
+}
+</style>
+
 <template>
-  <main class="container text-white">
+  <main class="container max-w-2xl text-white">
     <!-- <template> -->
+    <div class="flex flex-col gap-4">
+      <Suspense>
+        <CityList />
+
+        <template #fallback>
+          <CityCardSkeleton />
+        </template>
+      </Suspense>
+      <div
+        class="h-0.5 my-4 w-full bg-fuel-secondary opacity-30 lg:w-1/3"
+      ></div>
+    </div>
     <div class="pt-4 mb-8 relative">
+      <p class="mb-4">Neuen Standort hinzufügen:</p>
       <p class="relative">
         <label class="block text-sm mb-1" for="place">PLZ/Ort</label>
         <input
@@ -19,7 +44,8 @@
         v-if="mapboxSearchResults"
       >
         <p class="py-2" v-if="searchError">
-          Sorry, something went wrong, please try again.
+          Entschuldigung, etwas ist schief gelaufen, bitte versuchen Sie es
+          erneut.
         </p>
         <p
           class="py-2"
@@ -30,7 +56,8 @@
             chosenResult == ''
           "
         >
-          No results match your query, try a different term.
+          Keine Ergebnisse stimmen mit Ihrer Suchanfrage überein, versuchen Sie
+          es mit einem anderen Begriff.
         </p>
         <template v-else>
           <li
@@ -52,10 +79,12 @@
           min="1"
           max="25"
           v-model="fuelRange"
-          step="2"
+          step="1"
           class="w-4/5 h-1 bg-white rounded-lg appearance-none cursor-pointer"
         />
-        <div class="w-1/5 min-w-fit text-center">{{ fuelRange }} km</div>
+        <div class="w-1/5 min-w-fit text-center text-fuel-secondary font-bold">
+          {{ fuelRange }} km
+        </div>
       </div>
 
       <p class="relative">
@@ -91,15 +120,6 @@
       >
         Suchen
       </div>
-    </div>
-    <div class="flex flex-col gap-4">
-      <Suspense>
-        <CityList />
-
-        <template #fallback>
-          <CityCardSkeleton />
-        </template>
-      </Suspense>
     </div>
   </main>
 </template>

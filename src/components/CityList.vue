@@ -1,10 +1,10 @@
 <template>
-  <p v-if="savedCities.length !== 0">Gespeicherte Orte:</p>
+  <p v-if="savedCities.length !== 0" class="mt-5">Gespeicherte Orte:</p>
   <div v-for="city in savedCities" :key="city.id">
     <CityCard :city="city" @click="goToCityView(city)" />
   </div>
 
-  <p v-if="savedCities.length === 0">
+  <p v-if="savedCities.length === 0" class="pt-6">
     Keine Standorte hinzugefügt. Um mit der Verfolgung eines Standorts zu
     beginnen, suchen Sie im obigen Feld.
   </p>

@@ -6,15 +6,17 @@
       class="text-white p-4 bg-fuel-secondary w-full text-center"
     >
       <p>
-        You are currently previewing this city, click the
-        <i class="fa-solid fa-circle-plus"></i> icon to start tracking this
-        city.
+        Sie sehen sich gerade diese Stadt in der Vorschau an. Klicken Sie auf
+        das <i class="fa-solid fa-circle-plus"></i> Symbol, um mit der
+        Verfolgung dieser Stadt zu beginnen.
       </p>
     </div>
     <!-- Fuel Overview -->
     <div class="flex flex-col items-center text-white py-12 px-4">
-      <h1 class="text-4xl mb-2">{{ route.params.city }}</h1>
-      <h2 class="text-2xl mb-2">
+      <h1 class="text-2xl mb-2">
+        <i class="fa-solid fa-location-dot pr-1"></i> {{ route.params.city }}
+      </h1>
+      <h2 class="mb-2">
         <span class="capitalize">{{ route.query.type }}</span> in
         {{ route.query.range }} km Umkreis
       </h2>
@@ -111,7 +113,7 @@
                 "
                 class="text-gray-400 text-center"
               >
-                durchschnittlicher Preis
+                durchschnitt-licher Preis
               </p>
 
               <p v-else class="text-black">

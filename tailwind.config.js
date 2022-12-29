@@ -11,6 +11,7 @@ module.exports = {
     },
     fontFamily: {
       Roboto: ["Roboto, sans-serif"],
+      Fugaz: ["Fugaz One, sans-serif"],
     },
     container: {
       padding: "2rem",
