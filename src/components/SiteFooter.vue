@@ -1,5 +1,5 @@
 <template>
-  <footer class="bg-white text-center p-4 text-fuel-secondary">
+  <footer class="bg-white text-center p-4 text-fuel-secondary mt-auto">
     <p>© 2023 Audrius Skersys. All rights reserved.</p>
     <p>
       To see explore more my projects, please visit my protofolio:
